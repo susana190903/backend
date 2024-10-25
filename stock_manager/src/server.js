@@ -1,4 +1,5 @@
 const express = require('express');
+const userRoutes = require('./routes/users');
 
 const app = express();
 
@@ -10,7 +11,14 @@ class Server{
 
         this.app.use(express.json());
 
+        this.routes();
+
     }   
+
+routes(){
+    this.app.use('/users', userRoutes);
+}
+
 
     
 start(){ 
@@ -23,3 +31,4 @@ start(){
 }
 
 module.exports = {Server};
+
