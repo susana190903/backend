@@ -11,15 +11,19 @@ class Server{
 
         this.app.use(express.json());
 
+        this.middlewares();
         this.routes();
-
+        
     }   
 
 routes(){
     this.app.use('/users', userRoutes);
 }
 
+middlewares(){
+    this.app.use(express.json());
 
+}
     
 start(){ 
 
