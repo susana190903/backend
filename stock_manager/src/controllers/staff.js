@@ -26,7 +26,7 @@ const getStaffById = async (req = request, res = response) => {
     try {
         conn = await pool.getConnection();
         const staff = await conn.query(staffQueries.getById, [+id]);
-        
+
         if (staff.length === 0) {
             res.status(404).send('Staff member not found');
             return;
@@ -59,12 +59,6 @@ const createStaff = async (req = request, res = response) => {
             res.status(404).send('User ID provided does not exist or is inactive');
             return;
         }
-        // Verificar si el correo ya está en uso
-        const [emailExists] = await conn.query('SELECT id FROM staff WHERE email = ? AND is_active = 1', [email]);
-        if (emailExists) {
-            res.status(409).send('The email provided is already in use');
-            return;
-        }
 
         // Crear el nuevo registro en la tabla staff
         const newStaff = await conn.query(staffQueries.create, [first_name, last_name, birth_date, gender, phone_number, email, address, user_id]);
@@ -85,13 +79,13 @@ const createStaff = async (req = request, res = response) => {
 
 const updateStaff = async (req = request, res = response) => {
     const { id } = req.params;
-    const { first_name, last_name, email, phone_number, address, user_id } = req.body;
+    const { first_name, last_name, email, phone_number, address } = req.body;
 
-    if (isNaN(id) || !first_name || !last_name || !email || !phone_number || !address || !user_id) {
+    if (isNaN(id) || !first_name || !last_name || !email || !phone_number || !address) {
         res.status(400).send("Invalid request");
         return;
     }
-    
+
     let conn;
     try {
         conn = await pool.getConnection();
@@ -101,14 +95,7 @@ const updateStaff = async (req = request, res = response) => {
             return;
         }
 
-        // Verificar si el correo ya está en uso por otro registro
-        const [emailExists] = await conn.query('SELECT id FROM staff WHERE email = ? AND id != ? AND is_active = 1', [email, +id]);
-        if (emailExists) {
-            res.status(409).send('The email provided is already in use');
-            return;
-        }
-
-        const result = await conn.query(staffQueries.update, [first_name, last_name, email, phone_number, address, user_id, +id]);
+        const result = await conn.query(staffQueries.update, [first_name, last_name, email, phone_number, address, +id]);
         if (result.affectedRows === 0) {
             res.status(500).send("Staff member could not be updated");
             return;

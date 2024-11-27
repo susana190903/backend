@@ -9,4 +9,3 @@ const staffQueries = {
 };
 
 module.exports = { staffQueries };
-

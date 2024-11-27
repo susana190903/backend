@@ -2,12 +2,6 @@ const {request, response} = require ('express');
 const pool = require('../../db/connection');
 const { usersQueries } = require('../models/users');
 
-//const users = [
-//    {id: 1, name: 'Jhon Doe'},
-//    {id: 2, name: 'Jane Doe'},
-//    {id: 3, name: 'Bob Smith'},
-//];
-
 const getAllUsers = async (req = request, res= response) => {
     let conn;
     try{
@@ -34,12 +28,12 @@ const getUserById = async (req = request, res= response) =>{
     try{
         conn = await pool.getConnection();
         const user = await conn.query(usersQueries.getById, [+id]);
-        
+
         if(user.length ===0){
-        res.status(404).send('User not found')
-        return;
-    }
-    res.send(user);
+            res.status(404).send('User not found')
+            return;
+        }
+        res.send(user);
     }catch (error){
         res.status(500).send(error);
     }finally{
@@ -48,11 +42,6 @@ const getUserById = async (req = request, res= response) =>{
 
     //const user = users.find(user => user.id === +id);
 
-    if(!user){
-        res.status(404).send('User not found')
-        return;
-    }
-    
 }
 //agregar un usuario
 const CreateUser = async (req = request, res = response) => {
@@ -82,14 +71,6 @@ const CreateUser = async (req = request, res = response) => {
     }finally{
         if(conn) conn.end();
     }
-
-     
-    //const user = user.find(user => user.name === name);
-
-    //if(user){
-    //    res.status(409).send('User already exits');
-    //}
-
 }
 
 const updateUser = async (req = request, res = response) => {
@@ -98,23 +79,23 @@ const updateUser = async (req = request, res = response) => {
 
     if (isNaN(id) || !username ) {
         res.status(400).send("Invalid request");
-        Return;
+        return;
     }
 
     let conn;
     try {
         conn = await pool.getConnection();
-        
+
         // Verificar si el usuario existe
         const user = await conn.query(usersQueries.getById, [+id]);
         if (user.length === 0) {
             res.status(404).send("not found");
             return;
         }
-        
+
         // Actualizar usuario
         const result = await conn.query(usersQueries.update, [username, +id]);
-        
+
         if (result.affectedRows === 0) {
             res.status(500).send("not be updated");
             return;
@@ -129,7 +110,7 @@ const updateUser = async (req = request, res = response) => {
 };
 
 
-const remove = async (req = request, res = response) => {
+const remove = (req = request, res = response) => {
     const { id } = req.params;
 
     if (isNaN(id)) {
@@ -137,31 +118,15 @@ const remove = async (req = request, res = response) => {
         return;
     }
 
-    //const userIndex = users.findIndex(user => user.id === +id);
-    let conn;
-    try{
-        conn = await pool.getConnection();
-        const user = await conn.query(usersQueries.getById, [+id]);
-        
-        if(user.length ===0){
-        res.status(404).send('User not found')
-        return;
-        }
-        const deleteduser = await conn.query (usersQueries.delete, [+id]);
-        if(deleteduser.affectedRows ===0){
-            res.status(404).send('user not found');
-            return;
-        }
-        res.send('user deleted successfully');
+    const userIndex = users.findIndex(user => user.id === +id);
 
-    }catch(error){
-        res.status(500).send(error);
-    }finally{
-        if (conn) conn.end();
+    if (userIndex === -1) {
+        res.status(404).send(`User with id ${id} not found`);
+        return;
     }
 
-
-
+    users.splice(userIndex, 1);
+    res.status(200).send('User deleted successfully');
 }
 
 module.exports = { getAllUsers, getUserById, CreateUser, updateUser, remove };
