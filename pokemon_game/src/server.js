@@ -1,5 +1,6 @@
 const express = require('express');
 const usersRoutes = require('./routes/users');
+const pokemonSeeder = require('./seeders/pokemon');
 
 class Server {
     constructor() {
@@ -16,6 +17,10 @@ class Server {
 
     routes() {
         this.app.use('/users', usersRoutes)
+    }
+
+    seeder(){
+        pokemonSeeder();
     }
 
     start() {
