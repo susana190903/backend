@@ -8,4 +8,4 @@ const userQueries = {
     deleteUser: 'DELETE FROM users WHERE id=?'
 }
 
-module.exports = {userQueries};
+module.exports = { userQueries };
