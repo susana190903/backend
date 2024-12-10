@@ -42,6 +42,20 @@ const getUserById = async (req = request, res = response) => {
     }
 };
 
+const get3RandomPokemons = async (req = request, res = response) => {
+        let conn;
+    try{
+        conn= await pool.getConnection();
+        const pokemons = await conn.query(pokemonsModel.get3RandomPokemons);
+    }catch(error){
+        res.status(500).send(error);
+        return;
+
+    }finally{
+        if (conn) conn.end();
+    }
+}
+
 const CreateUser = async (req = request, res = response) => {
     const { first_name, last_name, email, password } = req.body;
     if (!first_name || !last_name || !email || !password) {

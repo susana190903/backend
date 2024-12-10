@@ -37,13 +37,13 @@ Content-Type: application/json
 ###
 
 ### Obtener un Pokémon por ID
-GET http://localhost:3000/pokemons/1
+GET http://localhost:3000/pokemons/2
 Content-Type: application/json
 
 ###
 
 ### Obtener 3 Pokemones aleatorios
-GET http://localhost:3000/pokemons/random
+GET http://localhost:3000/pokemons/play
 Content-Type: application/json
 
 ###
