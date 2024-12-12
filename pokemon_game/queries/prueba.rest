@@ -15,6 +15,22 @@ Content-Type: application/json
     
 }
 ###
+
+
+###
+POST http://localhost:3000/users/
+Content-Type: application/json
+
+{
+    "first_name": "Susana Lizeth",
+    "last_name": "Jorge Cruz",
+    "email" : "jorgecruzsusana30@gmail.com",
+    "password": "MyPassword123"
+    
+}
+###
+
+
 PUT http://localhost:3000/users/2
 Content-Type: application/json
 

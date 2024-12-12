@@ -1,11 +1,11 @@
 const userQueries = {
-    getAll: 'SELECT * FROM users',
-    getById: 'SELECT * FROM users WHERE id = ?',
-    getByEmail: 'SELECT * FROM users WHERE email = ?',
-    create: 'INSERT INTO users (first_name, last_name, email, password) VALUES (?,?,?,?)',
-    editUser: 'UPDATE users SET first_name=?, last_name=?, email=? WHERE id=?',
-    emailvalid: 'SELECT * FROM users WHERE email = ? AND id <> ?',
-    deleteUser: 'DELETE FROM users WHERE id=?'
+    getAll: 'SELECT * FROM user',
+    getById: 'SELECT * FROM user WHERE id = ?',
+    getByEmail: 'SELECT * FROM user WHERE email = ?',
+    create: 'INSERT INTO user (first_name, last_name, email, password) VALUES (?,?,?,?)',
+    editUser: 'UPDATE user SET first_name=?, last_name=?, email=? WHERE id=?',
+    emailvalid: 'SELECT * FROM user WHERE email = ? AND id <> ?',
+    deleteUser: 'DELETE FROM user WHERE id=?'
 }
 
 module.exports = { userQueries };
